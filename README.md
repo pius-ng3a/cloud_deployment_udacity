@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Give your Application Auto-Deploy Superpowers
 
 In this project, you will prove your mastery of the following learning objectives:
@@ -40,3 +41,7 @@ Before you submit your project, please check your work against the project rubri
 ### License
 
 [License](LICENSE.md)
+=======
+# cloud_deployment_udacity
+Udacity auto deploy project
+>>>>>>> a4c11386ebf92438bf02fe11d41788d3356e595e
