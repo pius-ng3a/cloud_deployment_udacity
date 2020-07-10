@@ -42,11 +42,11 @@ jobs:
     steps:
       - checkout
       - run: 
-        name: test backend
-        command: |
-          cd backend
-          npm install
-          npm run test
+          name: test backend
+          command: |
+            cd backend
+            npm install
+            npm run test
       - run: 
           name: Save test results
           command: |
@@ -72,11 +72,11 @@ jobs:
       - store_artifacts:
           path: ~/cucumber    
       - run: 
-        name: test front end
-        command: |
-          cd frontend
-          npm install
-          npm run test
+          name: test front end
+          command: |
+            cd frontend
+            npm install
+            npm run test
           
 workflows:
   default:
