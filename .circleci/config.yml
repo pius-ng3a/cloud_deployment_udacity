@@ -1,4 +1,11 @@
 version: 2.1
+executors:
+  general-executor:
+    docker:
+      - image: circleci/ruby:2.4.1
+  lw_executor:
+    docker:
+      - image: circleci/node:13.8.0
 
 jobs:
   hello-world:
@@ -10,8 +17,77 @@ jobs:
           name: Say Hello
           command: |
             echo "Hello World"
-
+  build_frontend:
+    executor: lw_executor
+    steps:
+      - checkout
+      - run:
+          name: build Frontend
+          command:  |  #specify the instructions to be executed while in this section. This should be modify accordingly
+            cd frontend 
+            npm install 
+            npm run build 
+    build_backend: #build the backend. necessary to perform the npm install first before running npm run build
+      executor: lw_executor
+      steps:
+        - checkout
+        - run:
+            name: Backend build
+            command: |
+              cd backend
+              npm install
+              npm run build
+    test_backend:
+      executor: lw_executor
+      steps:
+        - checkout
+        - run: 
+          name: test backend
+          command: |
+            cd backend
+            npm install
+            npm run test
+        - run: 
+            name: Save test results
+            command: |
+              mkdir -p ~/cucumber
+              bundle exec cucumber --format pretty --format json --out ~/cucumber/tests.cucumber
+            when: always
+        - store_test_results:
+            path: ~/cucumber
+        - store_artifacts:
+            path: ~/cucumber
+  test_frontend:
+    executor: lw_executor
+    steps:
+      - checkout
+      - run: 
+          name: Save test results
+          command: |
+            mkdir -p ~/cucumber
+            bundle exec cucumber --format pretty --format json --out ~/cucumber/tests.cucumber
+          when: always
+      - store_test_results:
+          path: ~/cucumber
+      - store_artifacts:
+          path: ~/cucumber    
+      - run: 
+        name: test front end
+        command: |
+          cd frontend
+          npm install
+          npm run test
+          
 workflows:
   default:
     jobs:
       - hello-world
+      - build_frontend
+      - build_backend
+      - test_backend:
+          requires:
+            - build_backend
+      - test_frontend:
+          requires:
+            - build_frontend
+
