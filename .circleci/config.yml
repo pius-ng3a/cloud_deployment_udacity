@@ -41,42 +41,39 @@ jobs:
     executor: lw_executor
     steps:
       - checkout
-      - run: 
-          name: test backend
+      - run:
+          name: runnig and saving backend tests
           command: |
             cd backend
             npm install
-            npm run test
-      - run: 
-          name: Save test results
-          command: |
-            mkdir -p ~/cucumber
-            bundle exec cucumber --format pretty --format json --out ~/cucumber/tests.cucumber
+            npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
+            mkdir -p ~/reports
+            npm run test | tap-xunit > ~/reports/ava.xml
+            # ava --tap | tap-xunit > ~/reports/ava.xml
           when: always
       - store_test_results:
-          path: ~/cucumber
+          path: ~/reports
       - store_artifacts:
-          path: ~/cucumber
+          path: ~/reports          
+    
   test_frontend:
     executor: lw_executor
     steps:
       - checkout
-      - run: 
-          name: Save test results
-          command: |
-            mkdir -p ~/cucumber
-            bundle exec cucumber --format pretty --format json --out ~/cucumber/tests.cucumber
-          when: always
-      - store_test_results:
-          path: ~/cucumber
-      - store_artifacts:
-          path: ~/cucumber    
-      - run: 
-          name: test front end
+      - run:
+          name: running and saving frontend tests
           command: |
             cd frontend
             npm install
-            npm run test
+            npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
+            mkdir -p ~/reports
+            npm run test | tap-xunit > ~/reports/ava.xml
+            # ava --tap | tap-xunit > ~/reports/ava.xml
+          when: always
+      - store_test_results:
+          path: ~/reports
+      - store_artifacts:
+          path: ~/reports  
           
 workflows:
   default:
