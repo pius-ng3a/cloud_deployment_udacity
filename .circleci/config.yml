@@ -27,7 +27,7 @@ jobs:
             cd frontend 
             npm install 
             npm run build 
-  build_backend: #build the backend. necessary to perform the npm install first before running npm run build
+  build_backend: #build the backend. exiists naa necessary to perform the npm install first before running npm run build
     executor: lw_executor
     steps:
       - checkout
