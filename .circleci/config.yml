@@ -47,33 +47,20 @@ jobs:
       - checkout
       - run: mkdir -p ~/junit
       - run:
-          environment:
-            MOCHA_FILE: ~/junit/test-results.xml
+          name: running backend test
           command: |
-            mocha test --reporter mocha-junit-reporter
             cd backend
             npm install
-            npm run test            
+            npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
+            mkdir -p ~/reports
+            npm run test | tap-xunit > ~/reports/ava.xml
+            # ava --tap | tap-xunit > ~/reports/ava.xml
           when: always
       - store_test_results:
-          path: ~/junit
+          path: ~/reports
       - store_artifacts:
-        path: ~/junit
-             
-    
-#- run: mkdir -p ~/junit
-      #- run: npm install -g mocha-junit-reporter
-      #- run:
-       #   environment:
-        #    MOCHA_FILE: ~/junit/test-results.xml
-         # command: mocha test --reporter mocha-junit-reporter
-          #when: always
-      #- store_test_results:
-       #   path: ~/junit
-      #- store_artifacts:
-       #   path: ~/junit 
-
-
+          path: ~/reports  
+  
   test_frontend:
     executor: lw_executor
     steps:
