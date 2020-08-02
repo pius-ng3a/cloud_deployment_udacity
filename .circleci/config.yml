@@ -50,16 +50,18 @@ jobs:
           name: running backend test
           command: |
             cd backend
-            npm install && npm audit fix
-            npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
-            mkdir -p ~/reports
-            npm run test | tap-xunit > ~/reports/ava.xml 
+            npm install --save oauth-sign 
+            npm audit fix
+            npm run test
+            #npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
+            #mkdir -p ~/reports
+            #npm run test | tap-xunit > ~/reports/ava.xml 
             # ava --tap | tap-xunit > ~/reports/ava.xml
-          when: always
-      - store_test_results:
-          path: ~/reports
-      - store_artifacts:
-          path: ~/reports  
+          #when: always
+      #- store_test_results:
+      #    path: ~/reports
+      #- store_artifacts:
+      #    path: ~/reports  
   
   test_frontend:
     executor: lw_executor
@@ -69,17 +71,37 @@ jobs:
           name: running and saving frontend tests
           command: |
             cd frontend
-            npm install && npm audit fix
-            npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
-            mkdir -p ~/reports
-            npm run test | tap-xunit > ~/reports/ava.xml 
+            npm install --save oauth-sign 
+            npm audit fix
+            #npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
+            #mkdir -p ~/reports
+            #npm run test | tap-xunit > ~/reports/ava.xml 
             # ava --tap | tap-xunit > ~/reports/ava.xml
-          when: always
-      - store_test_results:
-          path: ~/reports
-      - store_artifacts:
-          path: ~/reports  
-          
+          #when: always
+      #- store_test_results:
+      #    path: ~/reports
+      #- store_artifacts:
+      #    path: ~/reports  
+  analyze_frontend:
+    executor: lw_executor
+    steps:
+      - checkout
+      - run: 
+          name: frontend analysis
+          command: |
+            cd frontend 
+            npm install
+            npm audit fix --audit-level=critical --force 
+  analyze_backend:
+      executor: lw_executor
+      steps:
+        - checkout
+        - run: 
+            name: backend analysis
+            command: |
+              cd backend 
+              npm install
+              npm audit fix --audit-level=critical --force        
 workflows: #jobs execution order
   default:
     jobs:
@@ -92,4 +114,6 @@ workflows: #jobs execution order
       - test_frontend:
           requires:
             - build_frontend
+      - analyze_backend
+      - analyze_frontend
 
