@@ -50,10 +50,10 @@ jobs:
           name: running backend test
           command: |
             cd backend
-            npm install
+            npm install && npm audit fix
             npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
             mkdir -p ~/reports
-            npm run test | tap-xunit > ~/reports/ava.xml && npm audit fix
+            npm run test | tap-xunit > ~/reports/ava.xml 
             # ava --tap | tap-xunit > ~/reports/ava.xml
           when: always
       - store_test_results:
@@ -69,10 +69,10 @@ jobs:
           name: running and saving frontend tests
           command: |
             cd frontend
-            npm install 
+            npm install && npm audit fix
             npm install tap-xunit -g # or you could use  "yarn add ava tap-xunit --dev"
             mkdir -p ~/reports
-            npm run test | tap-xunit > ~/reports/ava.xml && npm audit fix
+            npm run test | tap-xunit > ~/reports/ava.xml 
             # ava --tap | tap-xunit > ~/reports/ava.xml
           when: always
       - store_test_results:
