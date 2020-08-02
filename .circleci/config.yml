@@ -90,7 +90,7 @@ jobs:
       - store_artifacts:
           path: ~/reports  
           
-workflows:
+workflows: #jobs execution order
   default:
     jobs:
       - hello-world
