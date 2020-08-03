@@ -91,7 +91,7 @@ jobs:
           command: |
             cd frontend 
             npm install
-            npm audit fix --audit-level=critical #--force 
+            npm audit --audit-level=critical # fix --audit-level=critical --force 
   analyze_backend:
       executor: lw_executor
       steps:
@@ -101,7 +101,7 @@ jobs:
             command: |
               cd backend 
               npm install
-              npm audit fix --audit-level=critical #--force        
+              npm audit --audit-level=critical #fix --audit-level=critical --force        
 workflows: #jobs execution order
   default:
     jobs:
