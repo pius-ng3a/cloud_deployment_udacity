@@ -127,7 +127,16 @@ jobs:
         body: SMS sent using twilio app
       - twilio/alert: # sends SMS when an error occurs. 
           body: "Autodeploy build : [$CIRCLE_BUILD_NUM]($CIRCLE_BUILD_URL) failed due to an error."
-
+  createEC2_infrastruture_for_backend: #create AWS infrastructure
+    executor: aws_executor
+    steps:
+      - checkout
+      - run:
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --stack-name backendStack
+#slack Workspace: circlecidemoworkspace.slack.com
 workflows: #jobs execution order
   default:
     jobs:
@@ -144,5 +153,6 @@ workflows: #jobs execution order
       - analyze_frontend
   build_and_notify:
     jobs:
+      - createEC2_infrastruture_for_backend
       - build_test_and_notify
 
