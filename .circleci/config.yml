@@ -150,13 +150,27 @@ jobs:
               --stack-name "d${CIRCLE_WORKFLOW_ID:2:5}" \
               --parameter-overrides NAME="d${CIRCLE_WORKFLOW_ID:2:5}"\
               --tags project=bucket1
+
+  configure_infrastructure_test: #ansible configuration
+    docker:
+        - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: 
+            - cd:16:70:fd:6f:9a:32:da:3a:4d:93:0f:a5:4f:ae:47
+      - run: apk add --update ansible
+      - run: ansible-playbook -i .circleci/ansible/roles/inventory2.txt .circleci/ansible/roles/setup/remote.yml
+         
       #- run: aws s3 sync . s3://"d${CIRCLE_WORKFLOW_ID:2:5}" --delete  #USE ONLY DURING ROLLBACK
 #slack Workspace: circlecidemoworkspace.slack.com 
 # backend (backend-6230ff7) instance url: ec2-18-222-159-170.us-east-2.compute.amazonaws.com
+# Frontend ARN: arn:aws:s3:::udapeople-101
+# Frontend endpoint: https://s3.console.aws.amazon.com/s3/buckets/udapeople-101
 workflows: #jobs execution order
   default:
     jobs:
-      - hello-world
+      #- hello-world
       - build_frontend
       - build_backend
       - test_backend:
@@ -167,15 +181,16 @@ workflows: #jobs execution order
             - build_frontend
       - analyze_backend
       - analyze_frontend
-      #Uncomment createEC2
+      #Uncomment next 4 lines on createEC2 and build_test before submission
       #- createEC2_infrastruture_for_backend: #region specified and pem key changed.
       #    requires:
       #      - build_backend
-      - deploy_and_create_frontend
+      #- deploy_and_create_frontend
       # UNCOMMENT THE THREE LINES BELOW BEFORE SUBMITTING. COMMENTED TO REDUCE EMAILS SENT DUE TO FAILURE
       #- build_test_and_notify:
       #    requires:
       #      - build_backend
+      - configure_infrastructure_test
 
  
 
