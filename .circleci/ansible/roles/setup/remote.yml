@@ -1,11 +1,12 @@
 ---
+    - name: Setting up packages on server
+      hosts: all
+      become: true
+      become_method: sudo
+      gather_facts: false
       tasks:
         - debug: var=creating_ansible
-        - name: Setting up packages on server
-          hosts: all
-          become: true
-          become_method: sudo
-          gather_facts: false
+        
           apt:
             update_cache: yes 
         - name: remove dependencies no longer required
