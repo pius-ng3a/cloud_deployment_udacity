@@ -127,18 +127,32 @@ jobs:
         body: SMS sent using twilio app
       - twilio/alert: # sends SMS when an error occurs. 
           body: "Autodeploy build : [$CIRCLE_BUILD_NUM]($CIRCLE_BUILD_URL) failed due to an error."
-  createEC2_infrastruture_for_backend: #create AWS infrastructure retrry man
+  createEC2_infrastruture_for_backend: #create AWS infrastructure 
     executor: aws_executor #AWS 662013528150
     steps:
       - checkout
       - run:
-          command: |
+          command: | #ENSURE THE RIGHT KEY AND AMI ARE SPECIFIED IN BACKEND.YML FILE
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --stack-name backendStack \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=bk1
-#slack Workspace: circlecidemoworkspace.slack.com  
+  deploy_and_create_frontend:
+    executor: aws_executor
+    steps:
+      - checkout
+      - run:
+          name: fronted creation and destroy of old version
+          command: | 
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --stack-name "d${CIRCLE_WORKFLOW_ID:2:5}" \
+              --parameter-overrides NAME="d${CIRCLE_WORKFLOW_ID:2:5}"\
+              --tags project=bucket1
+      #- run: aws s3 sync . s3://"d${CIRCLE_WORKFLOW_ID:2:5}" --delete  #USE ONLY DURING ROLLBACK
+#slack Workspace: circlecidemoworkspace.slack.com 
+# backend (backend-6230ff7) instance url: ec2-18-222-159-170.us-east-2.compute.amazonaws.com
 workflows: #jobs execution order
   default:
     jobs:
@@ -153,12 +167,15 @@ workflows: #jobs execution order
             - build_frontend
       - analyze_backend
       - analyze_frontend
-      - createEC2_infrastruture_for_backend: #region specified and pem key changed.
-          requires:
-            - build_backend
-      - build_test_and_notify:
-          requires:
-            - build_backend
+      #Uncomment createEC2
+      #- createEC2_infrastruture_for_backend: #region specified and pem key changed.
+      #    requires:
+      #      - build_backend
+      - deploy_and_create_frontend
+      # UNCOMMENT THE THREE LINES BELOW BEFORE SUBMITTING. COMMENTED TO REDUCE EMAILS SENT DUE TO FAILURE
+      #- build_test_and_notify:
+      #    requires:
+      #      - build_backend
 
  
 
