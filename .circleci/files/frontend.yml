@@ -5,7 +5,7 @@ Parameters:
   ID:
     Description: Unique identifier.
     Type: String
-
+    Default: "101"
 Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
