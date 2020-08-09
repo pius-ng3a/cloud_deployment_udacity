@@ -135,7 +135,8 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
-              --stack-name backendStack
+              --stack-name backendStack \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=bk1
 #slack Workspace: circlecidemoworkspace.slack.com  
 workflows: #jobs execution order
