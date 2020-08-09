@@ -151,12 +151,12 @@ workflows: #jobs execution order
             - build_frontend
       - analyze_backend
       - analyze_frontend
-  build_and_notify:
-    jobs:
       - createEC2_infrastruture_for_backend: #region specified and pem key changed.
           requires:
             - build_backend
       - build_test_and_notify:
           requires:
             - build_backend
+
+ 
 
