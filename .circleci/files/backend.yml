@@ -5,7 +5,7 @@ Parameters:
   ID:
     Description: Unique identifier.
     Type: String
-    Default: "012"
+    Default: "021"  # I added default
 
 Resources:
   InstanceSecurityGroup:
@@ -29,9 +29,9 @@ Resources:
       InstanceType: t2.micro
       SecurityGroups:
         - Ref: InstanceSecurityGroup
-      KeyName: udacity
+      KeyName: UdaCloudKey   # i changed
       # if this ami id is not available for you, you can find another (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
-      ImageId: ami-068663a3c619dd892 
+      ImageId: ami-01237fce26136c8cc  #i changed 
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
