@@ -4,7 +4,7 @@
       become: true
       become_method: sudo
       gather_facts: false
-      debug: var=creating_ansible
+      #debug: var=creating_ansible
       apt:
         update_cache: yes 
         autoremove: yes  # removing old dependencies
@@ -12,15 +12,16 @@
     - name: "install dependencies."
       become: true
       become_method: sudo
-      apt:
+      apt: # update environment
         name: ["update","upgrade"]
+ 
+
+    - name: "install pm2"
+      become: true
       apt:
         name: ["python","nodejs", "npm"]
         state: latest
         update_cache: yes
-        
-    - name: "install pm2"
-      become: true
       npm:
         name: pm2
         global: yes
