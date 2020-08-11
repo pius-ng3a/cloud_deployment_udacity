@@ -31,7 +31,6 @@
     - name: installing more packages
       become: yes
       ignore_errors: true
-      loop:
         - . ~/.nvm/nvm.sh
         - pm2 start "npm start" --name backend
         - args:
@@ -41,14 +40,14 @@
         - git: 
             dest: /src/project
             repo: "https://github.com/pius-ng3a/cloud_deployment_udacity.git"
-          version: master
-          shell: |
-            cd /src/project/backend
-            npm i 
-            pm2 startup 
-            pm2 start npm --name \"backend\" -- start"
-          copy: #copy environment variables from .env file
-            src: backend/.env
-            dest: ~/udaPeople/backend/.env
+            version: master
+            shell: |
+                cd /src/project/backend
+                npm i 
+                pm2 startup 
+                pm2 start npm --name \"backend\" -- start"
+                copy: #copy environment variables from .env file
+                src: backend/.env
+                dest: ~/udaPeople/backend/.env
             force: yes
   
