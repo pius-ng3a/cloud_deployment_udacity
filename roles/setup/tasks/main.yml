@@ -1,23 +1,21 @@
 ---
     - name: "Setting up packages on server"
-      become: true
-      gather_facts: false
-      #debug: var=creating_ansible
+      become: yes
       apt:
         update_cache: yes 
     - name: "Remove dependencies"
-      become: true
+      become: yes
       apt:
         autoremove: yes  # removing old dependencies
   
     - name: "install dependencies."
-      become: true
+      become: yes
       apt: # update environment
         name: ["update","upgrade"]
   
   
     - name: "install pm2"
-      become: true
+      become: yes
       apt:
         name: ["python","nodejs", "npm"]
         state: latest
