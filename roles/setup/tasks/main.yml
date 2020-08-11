@@ -1,7 +1,6 @@
 ---
     - name: "Setting up packages on server"
       become: true
-      become_method: sudo
       gather_facts: false
       #debug: var=creating_ansible
       apt:
