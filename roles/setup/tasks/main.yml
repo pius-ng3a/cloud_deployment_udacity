@@ -14,12 +14,14 @@
         name: ["update","upgrade"]
   
   
-    - name: "install pm2"
+    - name: "install python and nodejs"
       become: yes
       apt:
         name: ["python","nodejs", "npm"]
         state: latest
         update_cache: yes
+    - name: "installing pm2"
+      become: yes
       npm:
         name: pm2
         global: yes
@@ -27,6 +29,7 @@
         state: present
     
     - name: installing more packages
+      become: yes
       ignore_errors: true
       loop:
         - . ~/.nvm/nvm.sh
