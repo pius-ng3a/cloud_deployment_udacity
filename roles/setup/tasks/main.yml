@@ -1,24 +1,19 @@
 ---
-    
-      hosts: all
-      user: root
-      become: true
-      tasks:
     - name: Setting up packages on server
+      become: true
       become_method: sudo
       gather_facts: false
       #debug: var=creating_ansible
       apt:
         update_cache: yes 
         autoremove: yes  # removing old dependencies
-
+  
     - name: "install dependencies."
       become: true
-      become_method: sudo
       apt: # update environment
         name: ["update","upgrade"]
- 
-
+  
+  
     - name: "install pm2"
       become: true
       apt:
@@ -53,3 +48,4 @@
             src: backend/.env
             dest: ~/udaPeople/backend/.env
             force: yes
+  
