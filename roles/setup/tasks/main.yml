@@ -27,6 +27,10 @@
         global: yes
         production: yes
         state: present
-    
+    - name: running the backend
+      shell: |
+        npm install
+        pm2 start "npm start" --name backend
+
    
   
