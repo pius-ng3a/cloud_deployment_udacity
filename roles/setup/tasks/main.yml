@@ -1,11 +1,14 @@
 ---
-    - name: Setting up packages on server
+    - name: "Setting up packages on server"
       become: true
       become_method: sudo
       gather_facts: false
       #debug: var=creating_ansible
       apt:
         update_cache: yes 
+    - name: "Remove dependencies"
+      become: true
+      apt:
         autoremove: yes  # removing old dependencies
   
     - name: "install dependencies."
