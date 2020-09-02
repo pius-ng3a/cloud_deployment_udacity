@@ -8,18 +8,26 @@
       apt:
         autoremove: yes  # removing old dependencies
   
-    - name: "install dependencies."
+    - name: "update system."
       become: yes
       apt: # update environment
-        name: ["update","upgrade"]
+        name: ["update"]
   
-  
+    - name: "Upgrade system"
+      become: yes
+      apt:
+        name: "upgrade"
     - name: "install python and nodejs"
       become: yes
       apt:
-        name: ["python","nodejs", "npm"]
+        name: ["nodejs", "npm"]
         state: latest
         update_cache: yes
+    - name: "installing python"
+      become: yes
+      apt:
+        name: "python"
+        state: latest
     - name: "installing pm2"
       become: yes
       npm:
