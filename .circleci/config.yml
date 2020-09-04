@@ -149,7 +149,7 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --stack-name "d${CIRCLE_WORKFLOW_ID:2:5}" \
               --parameter-overrides NAME="d${CIRCLE_WORKFLOW_ID:2:5}"\
-              --tags project=bucket1
+              --tags project=bucket2
       
   configure_infrastructure_test: #ansible configuration
     docker:
@@ -185,7 +185,7 @@ workflows: #jobs execution order
       #- createEC2_infrastruture_for_backend: #region specified and pem key changed.
       #    requires:
       #      - build_backend
-      #- deploy_and_create_frontend
+      - deploy_and_create_frontend
       # UNCOMMENT THE THREE LINES BELOW BEFORE SUBMITTING. COMMENTED TO REDUCE EMAILS SENT DUE TO FAILURE
       #- build_test_and_notify:
       #    requires:
