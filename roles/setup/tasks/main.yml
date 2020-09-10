@@ -11,12 +11,8 @@
     - name: "update system."
       become: yes
       apt: # update environment
-        name: ["update"]
-  
-    - name: "Upgrade system"
-      become: yes
-      apt:
-        name: "upgrade"
+        update_cache: yes
+ 
     - name: "install python and nodejs"
       become: yes
       apt:
