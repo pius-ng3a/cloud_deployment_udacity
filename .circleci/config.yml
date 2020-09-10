@@ -151,7 +151,7 @@ jobs:
               --parameter-overrides NAME="d${CIRCLE_WORKFLOW_ID:2:5}"\
               --tags project=bucket2
       
-  configure_infrastructure_test: #ansible configuration
+  configuring_infrastructure: #ansible configuration
     docker:
         - image: python:3.7-alpine3.11
     steps:
@@ -166,7 +166,21 @@ jobs:
             ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-14-1-178.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
             
       - run: ansible-playbook -i inventory.txt  main_remote.yml
-         
+
+  migrate_db: 
+    executor:
+      name: lw_executor
+      tag: "db_migrate"
+    steps:
+      - checkout
+      - run:
+          name: "Migrations"
+          command: |
+            cd backend 
+            npm install
+            sudo npm install typescript -g 
+            npm run migrations > db_migrated.txt #this is for proof that task was done
+            echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
       #- run: aws s3 sync . s3://"d${CIRCLE_WORKFLOW_ID:2:5}" --delete  #USE ONLY DURING ROLLBACK
 #slack Workspace: circlecidemoworkspace.slack.com 
 # backend (backend-6230ff7) instance url: ec2-18-222-159-170.us-east-2.compute.amazonaws.com
@@ -195,7 +209,8 @@ workflows: #jobs execution order
       #- build_test_and_notify:
       #    requires:
       #      - build_backend
-      - configure_infrastructure_test
+      #- configuring_infrastructure
+      - migrate_db
 
  
 
