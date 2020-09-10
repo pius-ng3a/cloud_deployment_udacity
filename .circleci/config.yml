@@ -169,7 +169,7 @@ jobs:
 
   migrate_db: 
     executor:
-      name: lw_executor
+      name: node/default
       
     steps:
       - checkout
@@ -210,7 +210,9 @@ workflows: #jobs execution order
       #    requires:
       #      - build_backend
       #- configuring_infrastructure
-      - migrate_db
+      - migrate_db:
+          requires:
+            - analyze_backend
 
  
 
