@@ -170,7 +170,7 @@ jobs:
   migrate_db: 
     executor:
       name: lw_executor
-      tag: "db_migrate"
+      tags: mig="db_migrate1"
     steps:
       - checkout
       - run:
