@@ -163,6 +163,7 @@ jobs:
           command: |
             apk add --update ansible && pip install awscli
             apk add openssh-client
+            ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-14-1-178.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
             
       - run: ansible-playbook -i inventory.txt  main_remote.yml
          
