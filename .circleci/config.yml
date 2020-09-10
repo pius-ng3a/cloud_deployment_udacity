@@ -168,9 +168,7 @@ jobs:
       - run: ansible-playbook -i inventory.txt  main_remote.yml
 
   migrate_db: 
-    executor:
-      name: node/default
-      
+    executor: aws_executor
     steps:
       - checkout
       - run:
