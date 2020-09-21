@@ -222,6 +222,7 @@ workflows: #jobs execution order
       - migrate_db:
           requires:
             - analyze_backend
+            - build_backend
 
  
 
