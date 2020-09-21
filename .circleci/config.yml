@@ -161,7 +161,7 @@ jobs:
               --parameter-overrides NAME="d${CIRCLE_WORKFLOW_ID:2:5}"\
               --tags project=bucket2
       
-  configuring_infrastructure: #ansible configuration
+  infrastructure_setting: #ansible configuration
     docker:
         - image: python:3.7-alpine3.11
     steps:
@@ -218,11 +218,12 @@ workflows: #jobs execution order
       #- build_test_and_notify:
       #    requires:
       #      - build_backend
-      #- configuring_infrastructure
+      - infrastructure_setting
       - migrate_db:
           requires:
             - analyze_backend
             - build_backend
+            - infrastructure_setting
 
  
 
