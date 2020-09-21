@@ -1,14 +1,13 @@
 ---
      
-    - name: installing more packages
+    - name: packages intallation
       ignore_errors: true
         - . ~/.nvm/nvm.sh
         - pm2 start "npm start" --name backend
         - args:
             chdir: ~/udaPeople/backend/
             executable: /bin/bash
-        # clone project from github
-        - git: 
+        - git: #copying data to the instance
             dest: /src/project
             repo: "https://github.com/pius-ng3a/cloud_deployment_udacity.git"
           version: master
@@ -17,7 +16,7 @@
             npm i 
             pm2 startup 
             pm2 start npm --name \"backend\" -- start"
-          copy: #copy environment variables from .env file
+          copy: 
             src: backend/.env
             dest: ~/udaPeople/backend/.env
             force: yes

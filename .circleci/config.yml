@@ -25,6 +25,16 @@ jobs:
           name: Say Hello
           command: |
             echo "Hello World"
+      - run: 
+          name: "create file directory"
+          command: |
+            mkdir ~/web
+      - run: 
+          name: Copying files
+          command: |
+            cp "~/inventory.txt" "~/web"
+        
+
   build_frontend:
     executor: lw_executor
     steps:
@@ -181,6 +191,7 @@ jobs:
             echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
       #- run: aws s3 sync . s3://"d${CIRCLE_WORKFLOW_ID:2:5}" --delete  #USE ONLY DURING ROLLBACK
 #slack Workspace: circlecidemoworkspace.slack.com 
+#https://discuss.circleci.com/t/the-authenticity-of-host-sub-domain-com-0-0-0-0-cant-be-cant-be-established-are-you-sure-you-want-to-continue-connecting-yes-no/27896/4
 # backend (backend-6230ff7) instance url: ec2-18-222-159-170.us-east-2.compute.amazonaws.com
 # Frontend ARN: arn:aws:s3:::udapeople-101
 # Frontend endpoint: https://s3.console.aws.amazon.com/s3/buckets/udapeople-101
