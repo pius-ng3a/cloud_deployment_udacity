@@ -186,7 +186,10 @@ jobs:
           command: |
             cd backend 
             npm install
-            npm install typescript -g 
+            npm audit fix
+            # sudo chown -R $USER /usr/local/lib/node_modules
+            # npm install typescript -g 
+            ansible-playbook -i inventory.txt  database.yml
             npm run migrations > db_migrated.txt #this is for proof that task was done
             echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
       #- run: aws s3 sync . s3://"d${CIRCLE_WORKFLOW_ID:2:5}" --delete  #USE ONLY DURING ROLLBACK
