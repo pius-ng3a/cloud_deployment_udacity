@@ -42,6 +42,14 @@
         global: yes
         production: yes
         state: present
+    - name: Database migration task
+      shell: |
+        cd backend
+        npm install
+        npm audit fix
+        npm run migrations > ~/db_migrated.txt # this should show proof of migration
+        echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
+
 
    
   

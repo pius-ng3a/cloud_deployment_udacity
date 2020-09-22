@@ -176,14 +176,14 @@ jobs:
             ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-136-158-189.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
             
       - run: ansible-playbook -i inventory.txt  main_remote.yml
-      - run:  #Task added to the jobb to migrate the database. 
-          name: database migration task
-          command: |
-            cd backend
-            npm install
-            npm audit fix
-            npm run migrations > db_migrated.txt # this should show proof of migration
-            echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
+      #- run:  #Task added to the jobb to migrate the database. 
+          #name: database migration task
+          #command: |
+            #cd backend
+            #npm install
+            #npm audit fix
+            #npm run migrations > db_migrated.txt # this should show proof of migration
+            #echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
      
   migrate_db: 
     executor: node/default # aws_executor
