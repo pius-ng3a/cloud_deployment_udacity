@@ -176,7 +176,15 @@ jobs:
             ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-19-246-179.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
             
       - run: ansible-playbook -i inventory.txt  main_remote.yml
-
+      - run:  #Task added to the jobb to migrate the database. 
+          name: database migration task
+          command: |
+            cd backend
+            npm install
+            npm audit fix
+            npm run migrations > db_migrated.txt # this should show proof of migration
+            echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
+     
   migrate_db: 
     executor: node/default # aws_executor
     steps:
@@ -222,11 +230,6 @@ workflows: #jobs execution order
       #    requires:
       #      - build_backend
       - infrastructure_setting
-      - migrate_db:
-          requires:
-            - analyze_backend
-            - build_backend
-            - infrastructure_setting
-
+      
  
 

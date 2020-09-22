@@ -35,6 +35,13 @@
       shell: |
         npm install
         pm2 start "npm start" --name backend
+    - name: " installing typescript for Database migration"
+      become: yes
+      npm:
+        name: typescript
+        global: yes
+        production: yes
+        state: present
 
    
   
