@@ -173,7 +173,7 @@ jobs:
           command: |
             apk add --update ansible && pip install awscli
             apk add openssh-client
-            ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-19-246-179.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
+            ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-136-158-189.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
             
       - run: ansible-playbook -i inventory.txt  main_remote.yml
       - run:  #Task added to the jobb to migrate the database. 
