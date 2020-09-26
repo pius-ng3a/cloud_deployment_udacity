@@ -182,7 +182,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-        fingerprints: ["cd:16:70:fd:6f:9a:32:da:3a:4d:93:0f:a5:4f:ae:47"]
+          fingerprints: ["cd:16:70:fd:6f:9a:32:da:3a:4d:93:0f:a5:4f:ae:47"] #adjusted fingerprint
       - run: 
           name: copying backend files
           command: |  
