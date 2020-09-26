@@ -1,9 +1,0 @@
----
-    - name: database migrations
-      become: yes
-      npm:
-        name: typescript
-        global: yes
-        production: yes
-        state: present
-    
