@@ -184,8 +184,8 @@ jobs:
       - add_ssh_keys:
         fingerprints: ["cd:16:70:fd:6f:9a:32:da:3a:4d:93:0f:a5:4f:ae:47"]
       - run: 
-          name: 
-          command: |
+          name: copying backend files
+          command: |  
             apk add --update ansible && pip install awscli
             apk add openssh-client
             ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-218-188-124.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
