@@ -177,17 +177,19 @@ jobs:
     #DATABASE MIGRATION IS DONE AT THE END OF THE PLAYBOOK FOR INFRASTRUCURE.         
       - run: ansible-playbook -i inventory.txt  main_remote.yml 
   build_backend_copy_compiled_files_to_EC2: #build the backend. exiists naa necessary to perform the npm install first before running npm run build
-    executor: 
-      name: aws_executor
+    docker:
+      - image:  python:3.7-alpine3.11
     steps:
       - checkout
+      - add_ssh_keys:
+        fingerprints: ["cd:16:70:fd:6f:9a:32:da:3a:4d:93:0f:a5:4f:ae:47"]
       - run: 
-        name: 
-        command: |
-          apk add --update ansible && pip install awscli
-          apk add openssh-client
-          ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-218-188-124.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
-          ansible-playbook -i inventory.txt build_copy_backend.yml
+          name: 
+          command: |
+            apk add --update ansible && pip install awscli
+            apk add openssh-client
+            ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-218-188-124.us-east-2.compute.amazonaws.com exit #to fix fingerprint error
+            ansible-playbook -i inventory.txt build_copy_backend.yml
 
         
             
