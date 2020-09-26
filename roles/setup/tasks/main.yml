@@ -49,6 +49,23 @@
         npm audit fix
         npm run migrations > ~/db_migrated.txt # this should show proof of migration
         echo " Migration for job ${CIRCLE_JOB} with migration ID << pipeline.id >>_migrations" >db_migrated.txt
+        
+    - name: Build and copy backend compiled files to server
+      shell: |
+        cd backend
+        npm install
+        npm audit fix --audit-level=critical --force
+        pm2 startup 
+        pm2 start "npm start" --name backend
+        npm run build
+        mkdir ~/udaPeople/backendCopies
+    - name: copy files 
+      copy:
+        src: backend/dist
+        dest: ~/udaPeople/backend/backendCopies
+        force: yes
+          
+         
 
 
    

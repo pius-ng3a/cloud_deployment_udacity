@@ -238,9 +238,9 @@ workflows: #jobs execution order
       #    requires:
       #      - build_backend
       - infrastructure_setting
-      - build_backend_copy_compiled_files_to_EC2:  #to be tested on server 
-          requires:
-            - infrastructure_setting
+      #- build_backend_copy_compiled_files_to_EC2:  #to be tested on server 
+      #    requires:
+      #      - infrastructure_setting
       
  
 
