@@ -1,9 +1,9 @@
 ---
     - name: Build and copy backend compiled files to server
-      become: yes
       shell: |
         cd backend
         npm install
+        npm audit fix --audit-level=critical --force
         pm2 startup 
         pm2 start "npm start" --name backend
         npm run build
